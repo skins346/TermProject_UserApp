@@ -83,8 +83,8 @@ public class MyView extends View {
         this.width = getClientWidth();
         busMap = BitmapFactory.decodeResource(res, R.drawable.map);
         refesh = BitmapFactory.decodeResource(res, R.drawable.refresh);
-        bus = BitmapFactory.decodeResource(res, R.drawable.bus1);
-        bus2 = BitmapFactory.decodeResource(res, R.drawable.bus2);
+        bus = BitmapFactory.decodeResource(res, R.drawable.bus2);
+        bus2 = BitmapFactory.decodeResource(res, R.drawable.bus1);
         sign = BitmapFactory.decodeResource(res, R.drawable.sign);
         bg = BitmapFactory.decodeResource(res, R.drawable.back);
         nobus = BitmapFactory.decodeResource(res, R.drawable.nobus);
@@ -150,7 +150,7 @@ public class MyView extends View {
         int sum = 0;
         boolean checkException = false;
 
-        if (index == 5)
+        if (index == 5|| index==7 || index==9 || index==11)
             checkException = true;
         // 가장 가까운 버스 찾기
         if (!checkException) {
@@ -166,13 +166,14 @@ public class MyView extends View {
                     break;
             }
         } else {
-            for (int i = index + 1; i <= 16 + (index - 1); i++) {
+            for (int i = 16 + (index - 1); i >= index + 1; i--) {
                 if (i % 16 == 0) {
                     if (check[16] == 1 && checkDest[16] != 1)
                         point = 16;
-                } else if (check[i % 16] == 1 && checkDest[16] != 1)
+                } else if (check[i % 16] == 1 && checkDest[i%16] != 1)
                     point = i % 16;
                 sum += time[(i)% 16];
+                System.out.println(check[i%16]+"@@"+checkDest[i%16]+"@@"+i%16+"@@"+point);
                 if(point!=99)
                     break;
             }
@@ -183,9 +184,9 @@ public class MyView extends View {
             msg = "도착예정인 버스가 없습니다.";
         else {
             if (checkFull[point] == 1)
-                msg = "대기시간: " + sum + "분 / 만석입니다.";
+                msg = "대기시간: " + sum + "분 / 자리 없음.";
             else
-                msg = "대기시간: " + sum + "분 / 자리가 있습니다.";
+                msg = "대기시간: " + sum + "분 / 자리 있음.";
         }
 
         tv.setText(msg);
@@ -208,36 +209,20 @@ public class MyView extends View {
                 onClick();
             } else if (currX < WMapInterval * 69 + (WMapInterval * 5) && currX > WMapInterval * 69 - (WMapInterval * 5) && currY < HMapInterval * 128 + (HMapInterval * 10) && currY > HMapInterval * 128 - (HMapInterval * 10)) {
                 showDialog(1);
-            } else if (currX < WMapInterval * 72 + (WMapInterval * 5) && currX > WMapInterval * 72 - (WMapInterval * 5) && currY < HMapInterval * 108 + (HMapInterval * 10) && currY > HMapInterval * 108 - (HMapInterval * 10)) {
-                showDialog(2);
-            } else if (currX < WMapInterval * 74 + (WMapInterval * 5) && currX > WMapInterval * 74 - (WMapInterval * 5) && currY < HMapInterval * 86 + (HMapInterval * 10) && currY > HMapInterval * 86 - (HMapInterval * 10)) {
+            }  else if (currX < WMapInterval * 74 + (WMapInterval * 5) && currX > WMapInterval * 74 - (WMapInterval * 5) && currY < HMapInterval * 86 + (HMapInterval * 10) && currY > HMapInterval * 86 - (HMapInterval * 10)) {
                 showDialog(3);
-            } else if (currX < WMapInterval * 73 + (WMapInterval * 5) && currX > WMapInterval * 73 - (WMapInterval * 5) && currY < HMapInterval * 65 + (HMapInterval * 10) && currY > HMapInterval * 65 - (HMapInterval * 10)) {
-                showDialog(4);
-            } else if (currX < WMapInterval * 69 + (WMapInterval * 5) && currX > WMapInterval * 69 - (WMapInterval * 5) && currY < HMapInterval * 44 + (HMapInterval * 10) && currY > HMapInterval * 44 - (HMapInterval * 10)) {
+            }  else if (currX < WMapInterval * 69 + (WMapInterval * 5) && currX > WMapInterval * 69 - (WMapInterval * 5) && currY < HMapInterval * 44 + (HMapInterval * 10) && currY > HMapInterval * 44 - (HMapInterval * 10)) {
                 showDialog(5);
-            } else if (currX < WMapInterval * 62 + (WMapInterval * 5) && currX > WMapInterval * 62 - (WMapInterval * 5) && currY < HMapInterval * 28 + (HMapInterval * 10) && currY > HMapInterval * 28 - (HMapInterval * 10)) {
-                showDialog(6);
             } else if (currX < WMapInterval * 48 + (WMapInterval * 5) && currX > WMapInterval * 48 - (WMapInterval * 5) && currY < HMapInterval * 17 + (HMapInterval * 10) && currY > HMapInterval * 17 - (HMapInterval * 10)) {
                 showDialog(7);
-            } else if (currX < WMapInterval * 35 + (WMapInterval * 5) && currX > WMapInterval * 35 - (WMapInterval * 5) && currY < HMapInterval * 28 + (HMapInterval * 10) && currY > HMapInterval * 28 - (HMapInterval * 10)) {
-                showDialog(8);
             } else if (currX < WMapInterval * 28 + (WMapInterval * 5) && currX > WMapInterval * 28 - (WMapInterval * 5) && currY < HMapInterval * 45 + (HMapInterval * 10) && currY > HMapInterval * 45 - (HMapInterval * 10)) {
                 showDialog(9);
-            } else if (currX < WMapInterval * 25 + (WMapInterval * 5) && currX > WMapInterval * 25 - (WMapInterval * 5) && currY < HMapInterval * 62 + (HMapInterval * 10) && currY > HMapInterval * 62 - (HMapInterval * 10)) {
-                showDialog(10);
             } else if (currX < WMapInterval * 23 + (WMapInterval * 5) && currX > WMapInterval * 23 - (WMapInterval * 5) && currY < HMapInterval * 78 + (HMapInterval * 10) && currY > HMapInterval * 78 - (HMapInterval * 10)) {
                 showDialog(11);
-            } else if (currX < WMapInterval * 24 + (WMapInterval * 5) && currX > WMapInterval * 24 - (WMapInterval * 5) && currY < HMapInterval * 105 + (HMapInterval * 10) && currY > HMapInterval * 105 - (HMapInterval * 10)) {
-                showDialog(12);
             } else if (currX < WMapInterval * 28 + (WMapInterval * 5) && currX > WMapInterval * 28 - (WMapInterval * 5) && currY < HMapInterval * 128 + (HMapInterval * 10) && currY > HMapInterval * 128 - (HMapInterval * 10)) {
                 showDialog(13);
-            } else if (currX < WMapInterval * 36 + (WMapInterval * 5) && currX > WMapInterval * 36 - (WMapInterval * 5) && currY < HMapInterval * 143 + (HMapInterval * 10) && currY > HMapInterval * 143 - (HMapInterval * 10)) {
-                showDialog(14);
             } else if (currX < WMapInterval * 48 + (WMapInterval * 5) && currX > WMapInterval * 48 - (WMapInterval * 5) && currY < HMapInterval * 153 + (HMapInterval * 10) && currY > HMapInterval * 153 - (HMapInterval * 10)) {
                 showDialog(15);
-            } else if (currX < WMapInterval * 62 + (WMapInterval * 5) && currX > WMapInterval * 62 - (WMapInterval * 5) && currY < HMapInterval * 143 + (HMapInterval * 10) && currY > HMapInterval * 143 - (HMapInterval * 10)) {
-                showDialog(16);
             }
         }
         invalidate();

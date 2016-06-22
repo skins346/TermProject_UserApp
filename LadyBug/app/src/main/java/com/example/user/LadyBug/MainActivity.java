@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -13,25 +14,26 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 /**
- Program to provide real time location of bus
+ Program to provide location of a bus
  Author: Kim Young Song. Kim Ma Ro . Lee Won Sang
  E-mail Address: infall346@gmail.com / maro2345@gamil.com / WonSang12@gmail.com
  Android Term Project
  Last Changed: June 22, 2016
  */
 
-
 public class MainActivity extends FragmentActivity {
 
     ViewPager pager; //ViewPager 참조변수
     ActionBar actionBar;  //ActionBar 참조변수
     public static boolean isConnect;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
     }//onCreate Method...
+
     public void init() {
         isConnect = isNetWork();
         actionBar = getActionBar();
@@ -132,19 +134,20 @@ public class MainActivity extends FragmentActivity {
             }
             return null;
         }
+
         @Override
         public int getItemPosition(Object item) {
             //인터넷 연결상태가 변한다면, fragment를 바꾸기 위한 새로고침이 필요하다.
             //position_none이 리턴되면 새로고침을 실행.
-            if(isConnect != isNetWork()) {
+            if (isConnect != isNetWork()) {
                 isConnect = isNetWork();
                 return POSITION_NONE;
-            }
-            else
+            } else
                 return POSITION_UNCHANGED;
         }
 
     }
+
     //ActionBar의 Tab 선택에 변화가 생기는 것을 인지하는 리스너(Listener)
     private ActionBar.TabListener listener = new ActionBar.TabListener() {
 
@@ -166,8 +169,8 @@ public class MainActivity extends FragmentActivity {
 
             //선택된 Tab객체의 위치값(왼족 처음부터 0,1,2....순으로 됨)
             int position = tab.getPosition();
-            if( position != 1){                 //terminate existed dialog
-                if(MyView.dialog != null)
+            if (position != 1) {                 //terminate existed dialog
+                if (MyView.dialog != null)
                     MyView.dialog.dismiss();
             }
             //Tab의 선택 위치에 따라 ViewPager에서 보여질 Item(View)를 설정
@@ -184,18 +187,24 @@ public class MainActivity extends FragmentActivity {
             // TODO Auto-generated method stub
         }
     };
-    private Boolean isNetWork(){ // 인터넷 연결 여부를 확인함 wifi나 모바일 네트워크중 하나라도 연결되있으면 true, 아니면 false 리턴.
-        ConnectivityManager manager = (ConnectivityManager) getSystemService (Context.CONNECTIVITY_SERVICE);
-        boolean isMobileAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isAvailable();
-        boolean isMobileConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
-        boolean isWifiAvailable = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isAvailable();
-        boolean isWifiConnect = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
 
-        if ((isWifiAvailable && isWifiConnect) || (isMobileAvailable && isMobileConnect)){
-            return true;
-        }else{
+    private Boolean isNetWork() { // 인터넷 연결 여부를 확인함 wifi나 모바일 네트워크중 하나라도 연결되있으면 true, 아니면 false 리턴.
+        ConnectivityManager manager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(manager == null)
             return false;
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo lte_4g = manager.getNetworkInfo(ConnectivityManager.TYPE_WIMAX);
+        boolean blte_4g = false;
+        if (lte_4g != null)
+            blte_4g = lte_4g.isConnected();
+        if (mobile != null) {
+            if (mobile.isConnected() || wifi.isConnected() || blte_4g)
+                return true;
+        } else {
+            if (wifi.isConnected() || blte_4g)
+                return true;
         }
+        return false;
     }
-
 }
