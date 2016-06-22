@@ -1,4 +1,4 @@
-package com.example.user.finalterm;
+package com.example.user.LadyBug;
 
 import org.junit.Test;
 
