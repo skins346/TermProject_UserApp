@@ -71,7 +71,8 @@ public class GetData {
 
             @Override
             protected String doInBackground(String... params) {
-
+                check--; //check의 값은 0이 되어 메인쓰레드는 맵에 버스의 위치를 표시하는 작업 수행 못함(동기화)
+        
                 String uri = params[0];
                 BufferedReader bufferedReader = null;
                 try {
@@ -93,7 +94,7 @@ public class GetData {
             }
             @Override
             protected void onPostExecute(String result) {
-
+	            check++; //쓰레드가 서버에서 데이터 값 가져오기를 완료한 후 메인 쓰레드에게 신호를 보냄(check의 값은 0에서 1이됨) 
             }
         }
         GetDataJSON g = new GetDataJSON();
