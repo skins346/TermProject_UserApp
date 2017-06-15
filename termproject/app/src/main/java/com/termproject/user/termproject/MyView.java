@@ -49,16 +49,11 @@ public class MyView extends View {
     public int[] checkFull = new int[18];
     public int[] time = new int[18];
 
-    // 새로고침
-    // 쓰레드가 서버에서 데이터를 가져올때까지 ui쓰레드는 기다려야됨. 0.1초마다 도착을 확인함
+    //  새로고침
+    // 쓰레드가 서버에서 데이터를 가져올때까지 ui쓰레드는 기다려야됨
     public void onClick() {
         receiver.getData("http://gachonladybug.esy.es/getData.php");
-        while (receiver.check)
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        while (receiver.check <=0); //동기화       
         dataList = receiver.getList();
         for (int i = 0; i < 18; i++) {
             check[i] = 0;
