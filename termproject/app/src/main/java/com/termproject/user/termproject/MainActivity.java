@@ -33,7 +33,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         init();
     }//onCreate Method...
-
+ 
     public void init() {
         isConnect = isNetWork();
         actionBar = getActionBar();
