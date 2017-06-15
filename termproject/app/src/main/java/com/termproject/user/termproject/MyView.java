@@ -62,7 +62,7 @@ public class MyView extends View {
         }
         invalidate();
     }
-
+    
     public void init() {
         receiver = new GetData();
         receiver.getData("http://gachonladybug.esy.es/getData.php");
